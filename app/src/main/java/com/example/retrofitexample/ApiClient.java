@@ -17,7 +17,7 @@ class APIClient {
 
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.boredapi.com/api/activity/")
+                .baseUrl("https://gorest.co.in/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
