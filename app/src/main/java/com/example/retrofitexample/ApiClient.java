@@ -9,17 +9,21 @@ class ApiClient {
 
     private static Retrofit retrofit = null;
 
+    private ApiClient() {
+    }
+
     static Retrofit getClient() {
+        if (retrofit == null) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://gorest.co.in/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("https://gorest.co.in/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build();
+        }
 
         return retrofit;
     }
