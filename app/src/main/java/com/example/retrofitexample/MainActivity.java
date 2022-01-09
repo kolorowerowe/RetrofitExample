@@ -1,5 +1,7 @@
 package com.example.retrofitexample;
 
+import static com.example.retrofitexample.Utils.formatPosts;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.retrofitexample.model.Post;
 import com.example.retrofitexample.model.PostResponse;
 
 import java.util.List;
@@ -20,8 +23,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView activityText;
-    TextView accessibilityText;
+    TextView pageText;
+    TextView postsText;
     ApiInterface apiInterface;
     int postPage = 1;
 
@@ -29,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        activityText = (TextView) findViewById(R.id.activity);
-        accessibilityText = (TextView) findViewById(R.id.accessibility);
-        accessibilityText.setMovementMethod(new ScrollingMovementMethod());
+        pageText = (TextView) findViewById(R.id.pageText);
+        postsText = (TextView) findViewById(R.id.postsText);
+        postsText.setMovementMethod(new ScrollingMovementMethod());
         apiInterface = APIClient.getClient().create(ApiInterface.class);
 
         Button button = findViewById(R.id.button_load_next_posts);
@@ -43,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
         PostResponse postResponse = response.body();
 
-        activityText.setText(String.format("Current Page: %d \nNext page: %s",
+        pageText.setText(String.format("Current Page: %d \nNext page: %s",
                 postResponse.getMeta().getPagination().getPage(),
                 postResponse.getMeta().getPagination().getLinks().getNext()));
-        List<String> posts = postResponse.getData().stream().map(entity -> entity.getTitle()).collect(Collectors.toList());
-        accessibilityText.setText(String.format("Posts on page: %d\n %s", postResponse.getData().size(), String.join(",\n", posts)));
+        List<String> posts = postResponse.getData().stream().map(Post::getTitle).collect(Collectors.toList());
+        postsText.setText(String.format("Posts on page: %d\n\n%s", postResponse.getData().size(), formatPosts(posts)));
         postPage = postResponse.getMeta().getPagination().getPage() + 1;
     }
 

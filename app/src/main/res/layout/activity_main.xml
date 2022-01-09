@@ -11,8 +11,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="362dp"
-        android:layout_height="287dp"
+        android:layout_width="369dp"
+        android:layout_height="437dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,25 +20,20 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="51dp"
-            android:text="What do you want to do?" />
-
-        <TextView
-            android:id="@+id/activity"
+            android:id="@+id/pageText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="36dp"
-            android:text="Activity: loading..." />
+            android:text="[Page info will appear here]" />
 
         <TextView
-            android:id="@+id/accessibility"
+            android:id="@+id/postsText"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="360dp"
             android:layout_marginBottom="92dp"
             android:scrollbars="vertical"
-            android:text="Accessibility: loading..." />
+            android:text="[Posts will appear here]" />
+
 
     </LinearLayout>
 
