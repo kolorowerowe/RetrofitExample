@@ -9,28 +9,8 @@
     android:verticalScrollbarPosition="right"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="369dp"
-        android:layout_height="437dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/postsText"
-            android:layout_width="match_parent"
-            android:layout_height="360dp"
-            android:layout_marginBottom="92dp"
-            android:scrollbars="vertical"
-            android:text="[Posts will appear here]" />
-
-
-    </LinearLayout>
-
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="369dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
@@ -51,8 +31,7 @@
             android:text="Prev page"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/page_text"
@@ -66,15 +45,66 @@
             android:id="@+id/button_next_page"
             android:layout_width="100dp"
             android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="25dp"
             android:layout_marginTop="16dp"
-            android:layout_alignParentEnd="true"
-            android:text="Next page"
-            android:layout_centerVertical="true"
-/>
-
+            android:text="Next page" />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/postsText"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:scrollbars="vertical"
+        android:text="[Posts will appear here]"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+    <TextView
+        android:id="@+id/newPostHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:scrollbars="vertical"
+        android:text="Create new post"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postsText" />
+
+    <EditText
+        android:id="@+id/newPostTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/newPostHeader"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Title"/>
+
+    <EditText
+        android:id="@+id/newPostBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/newPostTitle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Body"/>
+
+    <Button
+        android:id="@+id/newPostSubmit"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:text="Create Post"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPostBody" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,14 @@
 package com.example.retrofitexample.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
-public class PostResponse {
+public class PostsResponse {
     private Meta meta;
-    private Post data;
+    private List<Post> data;
 
-    public PostResponse(Meta meta, Post data) {
+    public PostsResponse(Meta meta, List<Post> data) {
         this.meta = meta;
         this.data = data;
     }
@@ -19,11 +21,11 @@ public class PostResponse {
         this.meta = meta;
     }
 
-    public Post getData() {
+    public List<Post> getData() {
         return data;
     }
 
-    public void setData(Post data) {
+    public void setData(List<Post> data) {
         this.data = data;
     }
 }

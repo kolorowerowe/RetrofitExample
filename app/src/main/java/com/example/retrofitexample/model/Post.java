@@ -7,7 +7,6 @@ public class Post {
     private String body;
 
     public Post(int id, int user_id, String title, String body) {
-
         this.id = id;
         this.user_id = user_id;
         this.title = title;

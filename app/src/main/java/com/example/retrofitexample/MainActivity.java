@@ -8,13 +8,12 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.retrofitexample.model.Post;
 import com.example.retrofitexample.model.PostResponse;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import com.example.retrofitexample.model.PostsResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,15 +21,24 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView pageText;
-    TextView postsText;
-    ApiInterface apiInterface;
-    int currentPage = 1;
-    int maxPage = 1;
-    String userId = "2194";
-
     Button buttonNextPage;
     Button buttonPrevPage;
+    TextView pageText;
+
+    TextView postsText;
+
+    EditText titleTextField;
+    EditText bodyTextField;
+    Button submitPostButton;
+
+    ApiInterface apiInterface;
+
+    int currentPage = 1;
+    int maxPage = 1;
+
+
+    private static final int userId = 2194;
+    private static final String accessToken = "012ed1dfa9e1248e83657b41bd4b309f9a747c3107adba6f1d1a3d8bcfd8598a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,49 +57,76 @@ public class MainActivity extends AppCompatActivity {
         buttonPrevPage.setOnClickListener(v -> prevPage());
         buttonPrevPage.setEnabled(false);
 
+        titleTextField = findViewById(R.id.newPostTitle);
+        bodyTextField = findViewById(R.id.newPostBody);
+
+        submitPostButton = findViewById(R.id.newPostSubmit);
+        submitPostButton.setOnClickListener(v -> createPost());
+
         getPosts();
     }
 
-    private void setData(Response<PostResponse> response) {
+    private void setData(Response<PostsResponse> response) {
         Log.d("TAG", response.code() + "");
 
-        PostResponse postResponse = response.body();
+        PostsResponse postsResponse = response.body();
 
-        pageText.setText(String.format("Current Page: \n%d", postResponse.getMeta().getPagination().getPage()));
-        List<String> posts = postResponse.getData().stream().map(Post::getTitle).collect(Collectors.toList());
-        postsText.setText(String.format("Posts on page: %d\n\n%s", postResponse.getData().size(), formatPosts(posts)));
-        maxPage = postResponse.getMeta().getPagination().getPages();
+        pageText.setText(String.format("Current Page: \n%d", postsResponse.getMeta().getPagination().getPage()));
+        postsText.setText(String.format("Posts on page: %d\n\n%s", postsResponse.getData().size(), formatPosts(postsResponse.getData())));
+        maxPage = postsResponse.getMeta().getPagination().getPages();
 
-        if (currentPage > 1){
+        if (currentPage > 1) {
             buttonPrevPage.setEnabled(true);
         } else {
             buttonPrevPage.setEnabled(false);
         }
 
-        if (currentPage < maxPage){
+        if (currentPage < maxPage) {
             buttonNextPage.setEnabled(true);
         } else {
             buttonNextPage.setEnabled(false);
         }
     }
 
-    private void nextPage(){
+    private void nextPage() {
         this.currentPage += 1;
         getPosts();
     }
 
-    private void prevPage(){
+    private void prevPage() {
         this.currentPage -= 1;
         getPosts();
     }
 
 
     private void getPosts() {
-        Call<PostResponse> getPosts = apiInterface.doGetPosts(String.valueOf(currentPage), userId);
-        getPosts.enqueue(new Callback<PostResponse>() {
+        Call<PostsResponse> getPosts = apiInterface.doGetPosts(String.valueOf(currentPage), userId);
+        getPosts.enqueue(new Callback<PostsResponse>() {
+            @Override
+            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
+                setData(response);
+            }
+
+            @Override
+            public void onFailure(Call<PostsResponse> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    private void createPost() {
+        String title = titleTextField.getText().toString();
+        String body = bodyTextField.getText().toString();
+        Post newPost = new Post(0, userId, title, body);
+
+
+        //TODO: this as a first exercise?
+        Call<PostResponse> createPost = apiInterface.createPost(accessToken, newPost);
+        createPost.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                setData(response);
+                getPosts();
+                clearForm();
             }
 
             @Override
@@ -99,5 +134,10 @@ public class MainActivity extends AppCompatActivity {
                 call.cancel();
             }
         });
+    }
+
+    private void clearForm() {
+        titleTextField.setText("");
+        bodyTextField.setText("");
     }
 }
