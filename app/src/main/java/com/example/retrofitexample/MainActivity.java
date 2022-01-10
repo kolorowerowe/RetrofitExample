@@ -25,40 +25,73 @@ public class MainActivity extends AppCompatActivity {
     TextView pageText;
     TextView postsText;
     ApiInterface apiInterface;
-    int postPage = 1;
+    int currentPage = 1;
+    int maxPage = 1;
+    String userId = "2194";
+
+    Button buttonNextPage;
+    Button buttonPrevPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pageText = (TextView) findViewById(R.id.pageText);
+        pageText = (TextView) findViewById(R.id.page_text);
         postsText = (TextView) findViewById(R.id.postsText);
         postsText.setMovementMethod(new ScrollingMovementMethod());
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        Button button = findViewById(R.id.button_load_next_posts);
-        button.setOnClickListener(v -> GetPosts());
+        buttonNextPage = findViewById(R.id.button_next_page);
+        buttonNextPage.setOnClickListener(v -> nextPage());
+        buttonNextPage.setEnabled(false);
+
+        buttonPrevPage = findViewById(R.id.button_prev_page);
+        buttonPrevPage.setOnClickListener(v -> prevPage());
+        buttonPrevPage.setEnabled(false);
+
+        getPosts();
     }
 
-    private void SetData(Response<PostResponse> response) {
+    private void setData(Response<PostResponse> response) {
         Log.d("TAG", response.code() + "");
 
         PostResponse postResponse = response.body();
 
-        pageText.setText(String.format("Current Page: %d \nNext page: %s",
-                postResponse.getMeta().getPagination().getPage(),
-                postResponse.getMeta().getPagination().getLinks().getNext()));
+        pageText.setText(String.format("Current Page: \n%d", postResponse.getMeta().getPagination().getPage()));
         List<String> posts = postResponse.getData().stream().map(Post::getTitle).collect(Collectors.toList());
         postsText.setText(String.format("Posts on page: %d\n\n%s", postResponse.getData().size(), formatPosts(posts)));
-        postPage = postResponse.getMeta().getPagination().getPage() + 1;
+        maxPage = postResponse.getMeta().getPagination().getPages();
+
+        if (currentPage > 1){
+            buttonPrevPage.setEnabled(true);
+        } else {
+            buttonPrevPage.setEnabled(false);
+        }
+
+        if (currentPage < maxPage){
+            buttonNextPage.setEnabled(true);
+        } else {
+            buttonNextPage.setEnabled(false);
+        }
     }
 
-    private void GetPosts() {
-        Call<PostResponse> getPosts = apiInterface.doGetPosts(String.valueOf(postPage));
+    private void nextPage(){
+        this.currentPage += 1;
+        getPosts();
+    }
+
+    private void prevPage(){
+        this.currentPage -= 1;
+        getPosts();
+    }
+
+
+    private void getPosts() {
+        Call<PostResponse> getPosts = apiInterface.doGetPosts(String.valueOf(currentPage), userId);
         getPosts.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                SetData(response);
+                setData(response);
             }
 
             @Override

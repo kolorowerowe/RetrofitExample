@@ -20,13 +20,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/pageText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="36dp"
-            android:text="[Page info will appear here]" />
-
-        <TextView
             android:id="@+id/postsText"
             android:layout_width="match_parent"
             android:layout_height="360dp"
@@ -37,14 +30,51 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button_load_next_posts"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:text="Load next Posts"
+    <RelativeLayout
+        android:layout_width="369dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <Button
+            android:id="@+id/button_prev_page"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+
+            android:text="Prev page"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/page_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Current Page: \n1" />
+
+        <Button
+            android:id="@+id/button_next_page"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="16dp"
+            android:layout_alignParentEnd="true"
+            android:text="Next page"
+            android:layout_centerVertical="true"
+/>
+
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
