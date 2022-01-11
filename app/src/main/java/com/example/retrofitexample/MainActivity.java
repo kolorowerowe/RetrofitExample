@@ -156,13 +156,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         //TODO - First exercise -  Handle 422 response code, returned when empty message is sent
-        Call<PostResponse> createPost = apiInterface.createPost(accessToken, newPost);
+        Call<PostResponse> createPost = apiInterface.createPostWithHeader("Bearer " + accessToken, newPost);
         createPost.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
                 if (response.isSuccessful()) {
                     getPosts();
                     clearForm();
+                } else if (response.code() == 422) {
+                    Toast.makeText(getApplicationContext(), "422 Unprocessable Entity. The blank field is invalid.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
                 }
