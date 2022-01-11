@@ -15,7 +15,7 @@ public class Utils {
     public static String formatPosts(List<Post> posts) {
         return IntStream
                 .range(0, posts.size())
-                .mapToObj(i -> i + 1 + ". Title: " + posts.get(i).getTitle() + ".\n" + posts.get(i).getBody())
+                .mapToObj(i -> i + 1 + ". Title: " + posts.get(i).getTitle() + ". Id: " + posts.get(i).getId() + "\n" + posts.get(i).getBody())
                 .collect(Collectors.joining("\n\n"));
     }
 }

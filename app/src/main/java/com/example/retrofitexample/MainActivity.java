@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.retrofitexample.model.Post;
 import com.example.retrofitexample.model.PostResponse;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     int maxPage = 1;
 
 
-    private static final int userId = 2194;
+    private static final int userId = 3994;
     private static final String accessToken = "012ed1dfa9e1248e83657b41bd4b309f9a747c3107adba6f1d1a3d8bcfd8598a";
 
     @Override
@@ -104,11 +105,21 @@ public class MainActivity extends AppCompatActivity {
         getPosts.enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
-                setData(response);
+                if (response.isSuccessful()) {
+                    setData(response);
+                }
+                else if (response.code() == 404)
+                {
+                    Toast.makeText(getApplicationContext(), "404 Not Found", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error " + t.getMessage() , Toast.LENGTH_SHORT).show();
                 call.cancel();
             }
         });
@@ -117,20 +128,26 @@ public class MainActivity extends AppCompatActivity {
     private void createPost() {
         String title = titleTextField.getText().toString();
         String body = bodyTextField.getText().toString();
-        Post newPost = new Post(0, userId, title, body);
+        Post newPost = new Post(1, userId, title, body);
 
 
-        //TODO: this as a first exercise?
+        //TODO: this as a first exercise? Handle 422 response code, returned when empty message is sent
         Call<PostResponse> createPost = apiInterface.createPost(accessToken, newPost);
         createPost.enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                getPosts();
-                clearForm();
+                if (response.isSuccessful()) {
+                    getPosts();
+                    clearForm();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error " + t.getMessage() , Toast.LENGTH_SHORT).show();
                 call.cancel();
             }
         });
