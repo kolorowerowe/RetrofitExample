@@ -4,6 +4,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/domin/AndroidStudioProjects/RetrofitExample/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/domin/AndroidStudioProjects/RetrofitExample/app/src/main/res/layout/post_view.xml" value="0.4" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/activity_list_item.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/list_menu_item_layout.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/list_menu_item_radio.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_2.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_2_single_choice.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_activated_1.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_activated_2.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_checked.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_multiple_choice.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_single_choice.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_selectable_list_item.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/domin/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/sboro/AndroidStudioProjects/RetrofitExample/app/src/main/res/layout/activity_main.xml" value="0.33" />
       </map>
     </option>

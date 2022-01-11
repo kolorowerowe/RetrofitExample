@@ -53,16 +53,15 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/postsText"
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:scrollbars="vertical"
-        android:text="[Posts will appear here]"
-        app:layout_constraintStart_toStartOf="parent"
+    <ListView
+        android:id="@+id/postListView"
+        android:layout_width="365dp"
+        android:layout_height="300dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
 
     <TextView
         android:id="@+id/newPostHeader"
@@ -74,25 +73,25 @@
         android:text="Create new post"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postsText" />
+        app:layout_constraintTop_toBottomOf="@+id/postListView" />
 
     <EditText
         android:id="@+id/newPostTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/newPostHeader"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Title"/>
+        android:hint="Title"
+        app:layout_constraintTop_toBottomOf="@+id/newPostHeader" />
 
     <EditText
         android:id="@+id/newPostBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/newPostTitle"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Body"/>
+        android:hint="Body"
+        app:layout_constraintTop_toBottomOf="@+id/newPostTitle" />
 
     <Button
         android:id="@+id/newPostSubmit"
@@ -104,7 +103,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newPostBody" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,19 +2,31 @@ package com.example.retrofitexample;
 
 import static com.example.retrofitexample.Utils.formatPosts;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.retrofitexample.adapter.PostsAdapter;
 import com.example.retrofitexample.model.Post;
 import com.example.retrofitexample.model.PostResponse;
 import com.example.retrofitexample.model.PostsResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
     Button buttonPrevPage;
     TextView pageText;
 
-    TextView postsText;
+    ListView postsListView;
+    PostsAdapter postsAdapter;
 
     EditText titleTextField;
     EditText bodyTextField;
@@ -46,8 +59,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pageText = (TextView) findViewById(R.id.page_text);
-        postsText = (TextView) findViewById(R.id.postsText);
-        postsText.setMovementMethod(new ScrollingMovementMethod());
+
+        getLayoutInflater().inflate(R.layout.post_view, postsListView);
+
+        postsAdapter = new PostsAdapter(this, R.layout.post_view);
+        postsListView = findViewById(R.id.postListView);
+        postsListView.setAdapter(postsAdapter);
+
+
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         buttonNextPage = findViewById(R.id.button_next_page);
@@ -67,13 +86,21 @@ public class MainActivity extends AppCompatActivity {
         getPosts();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
+
     private void setData(Response<PostsResponse> response) {
         Log.d("TAG", response.code() + "");
 
         PostsResponse postsResponse = response.body();
 
         pageText.setText(String.format("Current Page: \n%d", postsResponse.getMeta().getPagination().getPage()));
-        postsText.setText(String.format("Posts on page: %d\n\n%s", postsResponse.getData().size(), formatPosts(postsResponse.getData())));
+
+        postsAdapter.addAllWithClear(response.body().getData());
+
         maxPage = postsResponse.getMeta().getPagination().getPages();
 
         if (currentPage > 1) {
@@ -107,19 +134,16 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 if (response.isSuccessful()) {
                     setData(response);
-                }
-                else if (response.code() == 404)
-                {
+                } else if (response.code() == 404) {
                     Toast.makeText(getApplicationContext(), "404 Not Found", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error " + t.getMessage() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 call.cancel();
             }
         });
@@ -131,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         Post newPost = new Post(1, userId, title, body);
 
 
-        //TODO: this as a first exercise? Handle 422 response code, returned when empty message is sent
+        //TODO - First exercise -  Handle 422 response code, returned when empty message is sent
         Call<PostResponse> createPost = apiInterface.createPost(accessToken, newPost);
         createPost.enqueue(new Callback<PostResponse>() {
             @Override
@@ -139,15 +163,14 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     getPosts();
                     clearForm();
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error " + t.getMessage() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 call.cancel();
             }
         });
@@ -156,5 +179,26 @@ public class MainActivity extends AppCompatActivity {
     private void clearForm() {
         titleTextField.setText("");
         bodyTextField.setText("");
+    }
+
+    public void deletePost(int postId) {
+        Call<Void> createPost = apiInterface.deletePost(postId, accessToken);
+        createPost.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    getPosts();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                call.cancel();
+            }
+        });
+
     }
 }

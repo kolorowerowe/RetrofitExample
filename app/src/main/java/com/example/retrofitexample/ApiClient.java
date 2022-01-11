@@ -5,14 +5,14 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-class ApiClient {
+public class ApiClient {
 
     private static Retrofit retrofit = null;
 
     private ApiClient() {
     }
 
-    static Retrofit getClient() {
+    public static Retrofit getClient() {
         if (retrofit == null) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
