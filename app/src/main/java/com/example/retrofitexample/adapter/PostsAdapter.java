@@ -20,6 +20,7 @@ import com.example.retrofitexample.model.Post;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
 
     public void addAllWithClear(@NonNull Collection<? extends Post> collection) {
         this.clear();
-        postList.addAll(collection);
+        postList.addAll(collection.stream().sorted(Comparator.comparingInt(Post::getId)).collect(Collectors.toList()));
     }
 
     @Override
