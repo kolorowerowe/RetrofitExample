@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     int maxPage = 1;
 
 
-    private static final int userId = 3994;
+    private static final int userId = 1597;
     private static final String accessToken = "012ed1dfa9e1248e83657b41bd4b309f9a747c3107adba6f1d1a3d8bcfd8598a";
 
     @Override
